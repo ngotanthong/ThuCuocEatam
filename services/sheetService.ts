@@ -8,7 +8,7 @@ export interface SheetConfig {
 
 const CONFIG_KEY = 'vnpt_sheet_config_v2';
 const SYNC_QUEUE_KEY = 'vnpt_sync_queue_v2';
-const DEFAULT_SHEET_URL = 'https://script.google.com/macros/s/AKfycbxy-xkOluPvQ-F0lP1BPgsF4EPqCW5juY9I1aKorDZv9oO60HRbXEM04bMVlhVmLP8Bjg/exec';
+const DEFAULT_SHEET_URL = 'https://script.google.com/macros/s/AKfycbzXecoBopms7X-348tJB3x79fOIGoFOcWOqRomkNkFQ69yIJaamPa4QY__VSPApnqYn6A/exec';
 
 export const getSheetConfig = (): SheetConfig => {
   try {

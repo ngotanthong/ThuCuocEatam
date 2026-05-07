@@ -1,6 +1,6 @@
 import { Bill } from '../types';
 
-const STORAGE_KEY = 'vnpt_bills_data';
+const STORAGE_KEY = 'vnpt_bills_data_v2';
 
 // Hàm lấy dữ liệu từ LocalStorage
 export const getBills = async (): Promise<Bill[]> => {

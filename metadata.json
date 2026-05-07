@@ -1,0 +1,8 @@
+{
+  "name": "Card-ngotanthong-vnpt",
+  "description": "Internal application for managing billing data and printing thermal receipts (58mm/80mm) for VNPT Dak Lak.",
+  "requestFramePermissions": [
+    "bluetooth",
+    "geolocation"
+  ]
+}

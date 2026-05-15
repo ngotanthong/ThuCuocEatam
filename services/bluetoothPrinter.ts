@@ -172,7 +172,8 @@ export const printBillBluetooth = async (bill: Bill) => {
   add(...CMD.BOLD_ON);
   text("VNPT NAM BUON MA THUOT"); nl();
   add(...CMD.BOLD_OFF);
-  text("Dia chi: 06 Le Duan, Buon Ma Thuot, Dak Lak"); nl();
+  text("Dia chi: 06 Le Duan, Buon Ma"); nl();
+  text("Thuot, Dak Lak"); nl();
   text("--------------------------------"); nl();
 
   add(...CMD.BOLD_ON);

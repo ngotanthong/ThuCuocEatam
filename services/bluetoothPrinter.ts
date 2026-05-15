@@ -17,7 +17,7 @@ const removeAccents = (str: string): string => {
 // Hàm chuyển đổi số thành chữ Tiếng Việt (Không dấu để in thermal)
 const numberToWordsNoAccent = (total: number): string => {
   if (total === 0) return "Khong dong";
-  
+
   const units = ["", "mot", "hai", "ba", "bon", "nam", "sau", "bay", "tam", "chin"];
   const levels = ["", "nghin", "trieu", "ty"];
 
@@ -82,11 +82,11 @@ export const connectPrinter = async (): Promise<string> => {
     const service = await server.getPrimaryService(PRINT_SERVICE_UUID);
     printCharacteristic = await service.getCharacteristic(PRINT_CHARACTERISTIC_UUID);
     printDevice = device;
-    
+
     device.addEventListener('gattserverdisconnected', () => {
-        printDevice = null;
-        printCharacteristic = null;
-        console.log("Printer disconnected");
+      printDevice = null;
+      printCharacteristic = null;
+      console.log("Printer disconnected");
     });
 
     return device.name || "Máy in Bluetooth";
@@ -107,38 +107,38 @@ export const disconnectPrinter = () => {
 // Hàm gửi dữ liệu xuống máy in với cơ chế an toàn (Chunking + Retry)
 const sendData = async (data: Uint8Array) => {
   if (!printCharacteristic) throw new Error("Chưa kết nối máy in!");
-  
+
   // GIẢM KÍCH THƯỚC CHUNK: Bluetooth LE thường có MTU thấp (~23 bytes).
   // 100 bytes quá lớn, gây lỗi GATT operation failed.
   // 40 bytes là mức an toàn cho hầu hết máy in nhiệt Bluetooth.
-  const CHUNK_SIZE = 40; 
-  
+  const CHUNK_SIZE = 40;
+
   for (let i = 0; i < data.length; i += CHUNK_SIZE) {
     const chunk = data.slice(i, i + CHUNK_SIZE);
-    
+
     let retries = 0;
     let success = false;
 
     // Cơ chế Retry nếu gặp lỗi GATT (do nghẽn buffer)
     while (!success && retries < 3) {
-        try {
-            await printCharacteristic.writeValue(chunk);
-            success = true;
-        } catch (error) {
-            console.warn(`Ghi chunk thất bại (lần ${retries + 1}), đang thử lại...`, error);
-            retries++;
-            // Backoff delay: Chờ lâu hơn mỗi lần retry (100ms, 200ms, 300ms)
-            await new Promise(r => setTimeout(r, 100 * retries)); 
-        }
+      try {
+        await printCharacteristic.writeValue(chunk);
+        success = true;
+      } catch (error) {
+        console.warn(`Ghi chunk thất bại (lần ${retries + 1}), đang thử lại...`, error);
+        retries++;
+        // Backoff delay: Chờ lâu hơn mỗi lần retry (100ms, 200ms, 300ms)
+        await new Promise(r => setTimeout(r, 100 * retries));
+      }
     }
 
     if (!success) {
-        throw new Error("Mất kết nối với máy in hoặc máy in đang bận (GATT Error). Hãy thử tắt bật lại máy in.");
+      throw new Error("Mất kết nối với máy in hoặc máy in đang bận (GATT Error). Hãy thử tắt bật lại máy in.");
     }
 
     // TĂNG DELAY: Chờ máy in xử lý buffer trước khi gửi gói tiếp theo.
     // Tăng từ 20ms lên 50ms để ổn định hơn.
-    await new Promise(r => setTimeout(r, 50)); 
+    await new Promise(r => setTimeout(r, 50));
   }
 };
 
@@ -170,11 +170,11 @@ export const printBillBluetooth = async (bill: Bill) => {
 
   add(...CMD.CENTER);
   add(...CMD.BOLD_ON);
-  text("VNPT BAC BUON MA THUOT"); nl();
+  text("VNPT NAM BUON MA THUOT"); nl();
   add(...CMD.BOLD_OFF);
-  text("Dia chi: 219 Ngo Quyen, Buon Ma Thuot, Dak Lak"); nl();
+  text("Dia chi: 06 Le Duan, Buon Ma Thuot, Dak Lak"); nl();
   text("--------------------------------"); nl();
-  
+
   add(...CMD.BOLD_ON);
   text("THONG BAO CUOC"); nl();
   text(`Ky cuoc: ${bill.period}`); nl();
@@ -187,7 +187,7 @@ export const printBillBluetooth = async (bill: Bill) => {
   if (bill.paymentCode) { text(`Ma TT : ${bill.paymentCode}`); nl(); }
   if (bill.phone) { text(`DT    : ${bill.phone}`); nl(); }
   text(`Dia chi: ${bill.address}`); nl();
-  
+
   add(...CMD.CENTER);
   text("--------------------------------"); nl();
 
@@ -195,11 +195,11 @@ export const printBillBluetooth = async (bill: Bill) => {
 
   text(`TONG CONG     : ${bill.total.toLocaleString('vi-VN')} d`); nl();
 
-  
+
   text(`${numberToWordsNoAccent(bill.total)}`); nl();
-  
+
   text("(Da bao gom VAT)"); nl();
-  
+
   add(...CMD.CENTER);
   text("--------------------------------"); nl();
   add(...CMD.LEFT);
@@ -209,7 +209,7 @@ export const printBillBluetooth = async (bill: Bill) => {
   text("--------------------------------");
   add(...CMD.CENTER);
   const now = new Date();
-  const timeStr = `${now.getDate().toString().padStart(2,'0')}/${(now.getMonth()+1).toString().padStart(2,'0')}/${now.getFullYear()} ${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}`;
+  const timeStr = `${now.getDate().toString().padStart(2, '0')}/${(now.getMonth() + 1).toString().padStart(2, '0')}/${now.getFullYear()} ${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
   text(`Thoi gian: ${timeStr}`); nl();
   text("--------------------------------"); nl();
 
@@ -282,7 +282,7 @@ export const printFaultReport = async (bill: Bill) => {
   const nl = () => add(0x0A);
 
   add(...CMD.INIT);
-  
+
   // Header
   add(...CMD.CENTER);
   add(...CMD.BOLD_ON);
@@ -302,12 +302,12 @@ export const printFaultReport = async (bill: Bill) => {
   text(`Dia chi: ${bill.address}`); nl();
   if (bill.subscriberNumber) { text(`So TB : ${bill.subscriberNumber}`); nl(); }
   if (bill.phone) { text(`SDT   : ${bill.phone}`); nl(); }
-  
+
   text("--------------------------------"); nl();
-  
+
   // Note / Issue
   if (bill.note) {
-      text(`Ghi chu: ${bill.note}`); nl();
+    text(`Ghi chu: ${bill.note}`); nl();
   }
   text("Ly do: Bao hong dich vu mang/TV"); nl();
   nl();
@@ -316,21 +316,21 @@ export const printFaultReport = async (bill: Bill) => {
   add(...CMD.CENTER);
   add(...CMD.BOLD_ON);
   text("TONG DAI BAO HONG:"); nl();
-  
+
   // Double height/width if possible, or just bold
   text("1800 1166"); nl();
   add(...CMD.BOLD_OFF);
   text("(Nhan phim 1 - Mien phi)"); nl();
-  
+
   text("--------------------------------"); nl();
-  
+
   // Footer
   add(...CMD.LEFT);
   text(`NV Ho tro: ${bill.staff.code}`); nl();
   const now = new Date();
-  const timeStr = `${now.getDate().toString().padStart(2,'0')}/${(now.getMonth()+1).toString().padStart(2,'0')}/${now.getFullYear()} ${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}`;
+  const timeStr = `${now.getDate().toString().padStart(2, '0')}/${(now.getMonth() + 1).toString().padStart(2, '0')}/${now.getFullYear()} ${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
   text(`Thoi gian: ${timeStr}`); nl();
-  
+
   nl(); nl(); nl(); nl();
   await sendData(new Uint8Array(commands));
 };

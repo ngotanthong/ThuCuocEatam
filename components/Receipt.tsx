@@ -10,7 +10,7 @@ interface ReceiptProps {
 // Hàm chuyển đổi số thành chữ Tiếng Việt cơ bản
 const numberToWords = (total: number): string => {
   if (total === 0) return "Không đồng";
-  
+
   const units = ["", "một", "hai", "ba", "bốn", "năm", "sáu", "bảy", "tám", "chín"];
   const levels = ["", "nghìn", "triệu", "tỷ"];
 
@@ -74,8 +74,8 @@ const Receipt: React.FC<ReceiptProps> = ({ bill, paperSize }) => {
     <div className={`${widthClass} font-mono text-xs leading-tight bg-white p-2 text-black mx-auto`}>
       {/* Header */}
       <div className="text-center font-bold mb-2">
-        <h1 className="text-sm">VNPT BẮC BUÔN MA THUỘT</h1>
-        <p className="font-normal text-[10px] leading-tight mt-1">Địa chỉ: 219 Ngô Quyền, Buôn Ma Thuột, Đắk Lắk</p>
+        <h1 className="text-sm">VNPT NAM BUÔN MA THUỘT</h1>
+        <p className="font-normal text-[10px] leading-tight mt-1">Địa chỉ: 06 Lê Duẩn, Buôn Ma Thuột, Đắk Lắk</p>
         <div className="border-b-2 border-dashed border-black my-1"></div>
         <h2 className="text-sm uppercase mt-2">THÔNG BÁO CƯỚC</h2>
         <p className="mt-1">KỲ CƯỚC: {bill.period}</p>
@@ -142,7 +142,7 @@ const Receipt: React.FC<ReceiptProps> = ({ bill, paperSize }) => {
         <p>Thời gian in: {timeString}</p>
         <div className="border-b-2 border-dashed border-black my-2"></div>
       </div>
-      
+
       {/* Space for cutting paper */}
       <div className="h-4"></div>
     </div>
